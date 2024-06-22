@@ -1,2 +1,7 @@
 # DvdRent_JavaEE
-JavaEE - Trial
+
+Maven 
+Wildfly 26 last relase
+Jakarta EE & Java EE
+Postgresql
+Primefaces
