@@ -1,0 +1,129 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:head>
+	<title>country</title>
+</h:head>
+
+<h:body>
+
+	<div class="card">
+		<h:form>
+			<p:growl id="messages" />
+
+			<p:menubar>
+				<p:submenu label="Table" icon="pi pi-fw pi-file">
+					<p:menuitem value="Main" icon="pi pi-fw pi-bookmark"
+						outcome="addressmain.xhtml" />
+					<p:menuitem value="country" icon="pi pi-fw pi-bookmark"
+						outcome="country.xhtml" />
+					<p:menuitem value="city" icon="pi pi-fw pi-bookmark"
+						outcome="city.xhtml" />
+					<p:menuitem value="address" icon="pi pi-fw pi-bookmark"
+						outcome="address.xhtml" />
+					<p:menuitem value="staffhome" icon="pi pi-fw pi-bookmark"
+						outcome="staffHome.xhtml" />
+					<p:menuitem value="customer" icon="pi pi-fw pi-bookmark"
+						outcome="customer.xhtml" />
+				</p:submenu>
+
+				<p:divider layout="vertical" />
+				<p:menuitem value="Quit" icon="pi pi-fw pi-power-off" />
+				<f:facet name="options">
+					<div class="ui-input-icon-left mr-2">
+						<h:outputLabel value="Welcome, #{loginController.loginname}" />
+					</div>
+					<p:button value="Logout" icon="pi pi-fw pi-sign-out"
+						styleClass="ui-button-info" />
+				</f:facet>
+			</p:menubar>
+		</h:form>
+	</div>
+
+
+	<div class="container">
+		<div class="header">
+			<h1>Country Management</h1>
+		</div>
+
+		<h:form id="formTable">
+			<div id="content">
+				<!-- Form untuk menambahkan negara baru -->
+				<div class="panelGrid">
+					<h:outputLabel for="newCountryName" value="Country Name:" />
+					<p:inputText id="newCountryName"
+						value="#{countryController.newCountry.country}" />
+
+					<p:commandButton class="add-button" value="Add Country"
+						action="#{countryController.addCountry}" process="@form"
+						update="@form" />
+
+				</div>
+
+				<!-- Tabel untuk menampilkan daftar negara -->
+				<p:dataTable value="#{countryController.countries}" var="country"
+					rows="10"
+					style="border: 1px solid #ccc; background-color: #f9f9f9; padding: 10px; margin-top: 20px;"
+					paginator="true" paginatorPosition="bottom"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+					rowsPerPageTemplate="5,10,{ShowAll|'All'}" scrollable="true"
+					scrollWidth="95%" scrollHeight="500">
+
+					<!-- Kolom Tabel -->
+					<p:column headerText="ID" style="width:20%">
+						<h:outputText value="#{country.countryId}" />
+					</p:column>
+					<p:column headerText="Country">
+						<h:outputText value="#{country.country}" />
+					</p:column>
+				</p:dataTable>
+
+			</div>
+			<div>
+				<p:growl id="growl" showDetail="true" />
+				<p:growl id="growl-sticky" for="sticky-key" showDetail="true"
+					sticky="true" />
+				<p:inputText id="countryIdInput2"
+					value="#{countryController.countryIdTo}" />
+				<p:commandButton value="Cari Negara"
+					action="#{countryController.fetchCountryById}"
+					update="countryDetails" />
+
+				<h:panelGroup id="countryDetails">
+					<h:panelGroup
+						rendered="#{not empty countryController.fetchedCountry}">
+						<p:inputText id="countryNameInput"
+							value="#{countryController.fetchedCountry.country}" />
+						<p:commandButton value="Simpan Perubahan"
+							action="#{countryController.saveEditedCountry}" update="@form" />
+						<p:commandButton value="Hapus"
+							action="#{countryController.deleteCountryById}" update="@form" />
+						<p:messages showDetail="true" showSummary="false"
+							autoUpdate="true" />
+					</h:panelGroup>
+				</h:panelGroup>
+
+			</div>
+		</h:form>
+		
+	</div>
+
+		<h:form id="refresg">
+			<p:commandButton class="add-button" value="refresh" 
+				actionListener="#{countryController.rfshs()}"
+				process="@form"
+						update="@form" />
+			</h:form>
+
+
+
+
+
+
+</h:body>
+</html>

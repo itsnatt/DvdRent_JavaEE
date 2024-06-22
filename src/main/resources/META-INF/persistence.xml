@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.2" 
+xmlns="http://xmlns.jcp.org/xml/ns/persistence" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence 
+http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+
+	<persistence-unit name="dvdrent">
+	<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+	 <class>model.Actor</class>
+  <class>model.ActorInfo</class>
+  <class>model.ActorInfoId</class>
+  <class>model.Address</class>
+  <class>model.Category</class>
+  <class>model.City</class>
+  <class>model.Country</class>
+  <class>model.Customer</class>
+  <class>model.CustomerList</class>
+  <class>model.CustomerListId</class>
+  <class>model.Film</class>
+  <class>model.FilmActor</class>
+  <class>model.FilmActorId</class>
+  <class>model.FilmCategory</class>
+  <class>model.FilmCategoryId</class>
+  <class>model.FilmList</class>
+  <class>model.FilmListId</class>
+  <class>model.Inventory</class>
+  <class>model.Language</class>
+  <class>model.NicerButSlowerFilmList</class>
+  <class>model.NicerButSlowerFilmListId</class>
+  <class>model.Payment</class>
+  <class>model.Rental</class>
+  <class>model.SalesByFilmCategory</class>
+  <class>model.SalesByFilmCategoryId</class>
+  <class>model.SalesByStore</class>
+  <class>model.SalesByStoreId</class>
+  <class>model.Staff</class>
+  <class>model.StaffList</class>
+  <class>model.StaffListId</class>
+  <class>model.Store</class>
+	
+	<properties>
+		<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL95Dialect"/>
+		<property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/dvdrental" />
+		<property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
+		<property name="hibernate.connection.username" value="postgres" />
+		<property name="hibernate.connection.password" value="postgres" />
+		<property name="hibernate.default_schema" value="public" />
+	</properties>
+			
+	</persistence-unit>
+	
+</persistence>

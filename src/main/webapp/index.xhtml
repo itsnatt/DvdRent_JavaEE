@@ -1,0 +1,49 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<f:view>
+	<f:metadata>
+		<f:event type="preRenderView"
+			listener="#{loginController.showMustLoginMessage}" />
+	</f:metadata>
+
+	<h:head>
+		<title>Login</title>
+	</h:head>
+	<h:body
+		style="height: 100vh; display: flex; justify-content: center; align-items: center; background-color: #f4f4f4;">
+		<h:form
+			style="width: 100%; max-width: 400px; margin: auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 8px; background: #fff; padding: 20px;">
+			<p:growl id="messages" showDetail="true" />
+
+			<p:panel header="Silahkan Login"
+				style="border: none; box-shadow: none;">
+				<h:panelGrid columns="2" cellpadding="5" style="width: 100%;">
+
+					<h:outputLabel for="emailInput" value="Email:"
+						style="font-weight: bold; margin-right: 10px;" />
+					<p:inputText id="emailInput" value="#{loginController.email}"
+						required="true" label="Email" style="flex: 1;" />
+
+					<h:outputLabel for="passwordInput" value="Password:"
+						style="font-weight: bold; margin-right: 10px;" />
+					<p:password id="passwordInput" value="#{loginController.password}"
+						required="true" label="Password" style="flex: 1;" feedback="false" />
+
+				</h:panelGrid>
+
+				<p:commandButton value="Login" action="#{loginController.login}"
+					update="messages" icon="pi pi-check" styleClass="ui-button-info"
+					style="margin-top: 10px; width: 100%;" />
+
+			</p:panel>
+
+			<h:panelGroup rendered="#{not empty param.error}"
+				style="margin-top: 10px;">
+				<p:messages showDetail="true" autoUpdate="true" closable="true" />
+			</h:panelGroup>
+		</h:form>
+	</h:body>
+</f:view>
+</html>

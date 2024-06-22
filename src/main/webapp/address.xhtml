@@ -1,0 +1,236 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:head>
+	<title>addrress</title>
+	<style type="text/css">
+.ui-g div {
+	background-color: #ededed;
+	text-align: center;
+	border: 1px solid #fafafa;
+}
+</style>
+
+
+</h:head>
+
+<h:body>
+	<p:growl id="growl" showDetail="true" />
+
+
+
+	<div class="card">
+		<h:form>
+			<p:menubar>
+				<p:submenu label="Table" icon="pi pi-fw pi-file">
+					<p:menuitem value="Main" icon="pi pi-fw pi-bookmark"
+						outcome="addressmain.xhtml" />
+					<p:menuitem value="country" icon="pi pi-fw pi-bookmark"
+						outcome="country.xhtml" />
+					<p:menuitem value="city" icon="pi pi-fw pi-bookmark"
+						outcome="city.xhtml" />
+					<p:menuitem value="address" icon="pi pi-fw pi-bookmark"
+						outcome="address.xhtml" />
+					<p:menuitem value="staffhome" icon="pi pi-fw pi-bookmark"
+						outcome="staffHome.xhtml" />
+					<p:menuitem value="customer" icon="pi pi-fw pi-bookmark"
+						outcome="customer.xhtml" />
+				</p:submenu>
+
+				<p:divider layout="vertical" />
+				<p:menuitem value="Quit" icon="pi pi-fw pi-power-off" />
+				<f:facet name="options">
+					<div class="ui-input-icon-left mr-2">
+						<i class="pi pi-fw pi-search" />
+						<p:inputText placeholder="Search" />
+					</div>
+					<p:button value="Logout" icon="pi pi-fw pi-sign-out"
+						styleClass="ui-button-info" />
+				</f:facet>
+			</p:menubar>
+		</h:form>
+		<h:form id="addressForm">
+			<!-- Table to display list of addresses -->
+			<p:dataTable var="address" value="#{addressController.addresses}"
+				emptyMessage="No addresses found" paginator="true" rows="10"
+				paginatorPosition="bottom"
+				currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+				rowsPerPageTemplate="5,10,15" id="addressTable">
+				<p:column headerText="Address ID">
+					<h:outputText value="#{address.addressId}" />
+				</p:column>
+				<p:column headerText="City">
+					<h:outputText value="#{address.city.city}" />
+				</p:column>
+				<p:column headerText="Address">
+					<h:outputText value="#{address.address}" />
+				</p:column>
+				<p:column headerText="District">
+					<h:outputText value="#{address.district}" />
+				</p:column>
+				<p:column headerText="Postal Code">
+					<h:outputText value="#{address.postalCode}" />
+				</p:column>
+				<p:column headerText="Phone">
+					<h:outputText value="#{address.phone}" />
+				</p:column>
+				<p:column headerText="Last Update">
+					<h:outputText value="#{address.lastUpdate}" />
+				</p:column>
+				<p:column headerText="Actions">
+					<p:commandButton icon="pi pi-pencil" title="Edit"
+						action="#{addressController.prepareEdit(address)}"
+						onclick="PF('addressEditDialog').show();"
+						update=":editAddressForm" />
+					<p:commandButton icon="pi pi-trash" title="Delete"
+						action="#{addressController.prepareDelete(address)}"
+						onclick="PF('deleteConfirmationDialog').show();" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+
+		<!-- Button to show add dialog -->
+		<p:commandButton value="Add Address" icon="pi pi-plus"
+			action="#{addressController.prepareAdd}"
+			oncomplete="PF('addaddress').show();" />
+
+		<p:dialog header="Add Address" widgetVar="addaddress" modal="true"
+			resizable="false" appendTo="@(body)" dynamic="true">
+			<h:form>
+				<p:panelGrid columns="2" style="width:100%; margin:0;"
+					columnClasses="label, input">
+
+					<h:outputText value="Param" />
+					<h:outputText value="edite" />
+
+					<h:outputText value="City" />
+					<p:selectOneMenu id="city" value="#{addressController.cityId}">
+						<f:selectItems value="#{cityController.cities}" var="city"
+							itemValue="#{city.cityId}" itemLabel="#{city.city}" />
+					</p:selectOneMenu>
+
+					<h:outputText value="Address" />
+					<p:inputText id="address"
+						value="#{addressController.newAddress.address}" />
+
+					<h:outputText value="District" />
+					<p:inputText id="district"
+						value="#{addressController.newAddress.district}" />
+
+					<h:outputText value="Postal Code" />
+					<p:inputText id="postalCode"
+						value="#{addressController.newAddress.postalCode}" />
+
+					<h:outputText value="Phone" />
+					<p:inputText id="phone"
+						value="#{addressController.newAddress.phone}" />
+
+				</p:panelGrid>
+
+				<div class="ui-g"
+					style="padding-top: 10px; justify-content: center;">
+					<p:commandButton value="Save"
+						actionListener="#{addressController.addAddress}"
+						update=":addressForm:addressTable growl"
+						oncomplete="if (args &amp;&amp; !args.validationFailed) PF('addaddress').hide();"
+						icon="pi pi-check" styleClass="ui-button-success"
+						style="width:48%; margin-right: 4%;" />
+					<p:commandButton value="Cancel" onclick="PF('addaddress').hide()"
+						icon="pi pi-times" styleClass="ui-button-danger"
+						style="width:48%;" />
+				</div>
+			</h:form>
+		</p:dialog>
+
+
+
+
+		<p:dialog header="Edit Address" widgetVar="addressEditDialog"
+			modal="true" resizable="false" appendTo="@(body)" dynamic="true">
+			<h:form id="editAddressForm">
+				<p:panelGrid columns="3" style="width:100%; margin:0;"
+					columnClasses="label, input">
+
+					<h:outputText value="Param" />
+					<h:outputText value="exist" />
+					<h:outputText value="edite" />
+
+					<h:outputText value="City" />
+					<h:outputText value="#{addressController.newAddress.city.city}" />
+					<p:selectOneMenu id="city" value="#{addressController.cityId}">
+						<f:selectItems value="#{cityController.cities}" var="city"
+							itemValue="#{city.cityId}" itemLabel="#{city.city}" />
+					</p:selectOneMenu>
+
+					<h:outputText value="Address" />
+					<h:outputText value="#{addressController.newAddress.address}" />
+					<p:inputText id="address"
+						value="#{addressController.newAddress.address}" />
+
+					<h:outputText value="District" />
+					<h:outputText value="#{addressController.newAddress.district}" />
+					<p:inputText id="district"
+						value="#{addressController.newAddress.district}" />
+
+					<h:outputText value="Postal Code" />
+					<h:outputText value="#{addressController.newAddress.postalCode}" />
+					<p:inputText id="postalCode"
+						value="#{addressController.newAddress.postalCode}" />
+
+					<h:outputText value="Phone" />
+					<h:outputText value="#{addressController.newAddress.phone}" />
+					<p:inputText id="phone"
+						value="#{addressController.newAddress.phone}" />
+
+				</p:panelGrid>
+
+				<div class="ui-g"
+					style="padding-top: 10px; justify-content: center;">
+					<p:commandButton value="Update"
+						actionListener="#{addressController.editAddress}"
+						update=":addressForm:addressTable growl"
+						oncomplete="if (args &amp;&amp; !args.validationFailed) PF('addressEditDialog').hide();"
+						icon="pi pi-check" styleClass="ui-button-success"
+						style="width:48%; margin-right: 4%;" />
+					<p:commandButton value="Cancel"
+						onclick="PF('addressEditDialog').hide()" icon="pi pi-times"
+						styleClass="ui-button-danger" style="width:48%;" />
+				</div>
+			</h:form>
+		</p:dialog>
+
+
+		<p:dialog id="deleteConfirmationDialog"
+			widgetVar="deleteConfirmationDialog" modal="true" closable="false">
+			<h:form>
+				<h:outputText value="Are you sure you want to delete this address?" />
+				<p:panelGrid columns="2" style="width:100%; margin:0;"
+					columnClasses="label, input">
+					<p:commandButton value="Yes"
+						action="#{addressController.deleteAddress}"
+						update=":addressForm:addressTable growl"
+						oncomplete="PF('deleteConfirmationDialog').hide();" />
+					<p:commandButton value="No"
+						onclick="PF('deleteConfirmationDialog').hide();" />
+				</p:panelGrid>
+			</h:form>
+		</p:dialog>
+
+
+
+
+	</div>
+
+
+
+
+
+
+
+
+</h:body>
+</html>
